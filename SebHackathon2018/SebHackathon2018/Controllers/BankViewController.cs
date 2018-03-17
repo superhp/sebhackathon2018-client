@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using Microsoft.AspNetCore.Mvc;
+using SebHackathon2018.Communication.BankApis;
+using SebHackathon2018.Db;
+using SebHackathon2018.Models;
 
 namespace SebHackathon2018.Controllers
 {
@@ -6,17 +10,40 @@ namespace SebHackathon2018.Controllers
     public class BankViewController : Controller
     {
         [HttpGet]
-        public string GetLoginView()
+        public BankViewDto GetLoginView()
         {
             var result = System.Text.Encoding.Default.GetString(Properties.Resources.BankView);
-            return result;
+            return new BankViewDto
+            {
+                BankViewTemplate = result
+            };
         }
 
         [HttpGet]
-        [Route("api/BankView/LoginOption")]
-        public void GetLoginOption(string clientId, string bankId)
+        [Route("LoginOption/{cliendId}/{bankId}")]
+        public IActionResult GetLoginOption(string clientId, string bankId)
         {
-            Redirect("gohere");
+            // TODO: do something with clientId and bankId
+
+            var userId = "ibsUser1";
+
+            return Redirect($"http://localhost:61392/api/Auth/Callback/{bankId}/{userId}");
+        }
+
+        [HttpGet]
+        [Route("UserInfo/{accessToken}")]
+        public IActionResult GetUserInfo(string accessToken)
+        {
+            IBankApi bankApi = new SebApi();
+
+            var tokenDto = TokensRepository.Get(accessToken);
+
+            if (tokenDto == null)
+                throw new Exception("Invalid token");
+
+            var userInfo = bankApi.GetUserInfo(tokenDto.BankToken);
+
+            return Ok(userInfo);
         }
     }
 }

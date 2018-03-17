@@ -22,6 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SebHackathon2018.Communication\SebHackathon2018.Communication.csproj" />
+    <ProjectReference Include="..\SebHackathon2018.Db\SebHackathon2018.Db.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="ClientApp\components\GetInfo.tsx" />
   </ItemGroup>
 
