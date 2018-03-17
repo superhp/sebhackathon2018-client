@@ -1,5 +1,7 @@
-﻿using RestSharp;
+﻿using System;
+using RestSharp;
 using SebHackathon2018.Dtos;
+using SebHackathon2018.Dtos.Models;
 using SebHackathon2018.Dtos.Seb;
 
 namespace SebHackathon2018.Communication.BankApis
@@ -57,16 +59,21 @@ namespace SebHackathon2018.Communication.BankApis
             return response.Data;
         }
 
-        public string GetAuthorized(string userId)
+        public AccessTokenDto GetAuthorized(string userId)
         {
             var authorization = StartAuthorization(userId);
-
             var authorizeDto = Authorize(userId, authorization);
 
-            return authorizeDto.Token;
+            return new AccessTokenDto
+            {
+                BankToken = authorizeDto.Token,
+                Token = Guid.NewGuid().ToString(),
+                BankId = BankEnum.Seb,
+                Expires = authorizeDto.Expires
+            };
         }
 
-        public UserDto GetUserInfo(string token)
+        public UserDto GetUserInfo(AccessTokenDto token)
         {
             var request = new RestRequest($"v1/bics/{_bic}/customer", Method.GET);
 
@@ -74,7 +81,7 @@ namespace SebHackathon2018.Communication.BankApis
 
             request.AddHeader("Accept", "application/json");
             request.AddHeader("Tpp-token", _tppToken);
-            request.AddHeader("User-Token", token);
+            request.AddHeader("User-Token", token.BankToken);
 
             var response = _client.Execute<UserInfoDto>(request);
 

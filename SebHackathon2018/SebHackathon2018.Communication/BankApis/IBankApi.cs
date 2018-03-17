@@ -4,7 +4,7 @@ namespace SebHackathon2018.Communication.BankApis
 {
     public interface IBankApi
     {
-        string GetAuthorized(string userId);
-        UserDto GetUserInfo(string token);
+        AccessTokenDto GetAuthorized(string userId);
+        UserDto GetUserInfo(AccessTokenDto token);
     }
 }
