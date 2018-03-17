@@ -4,6 +4,7 @@ using SebHackathon2018.Communication;
 using SebHackathon2018.Communication.BankApis;
 using SebHackathon2018.Db;
 using SebHackathon2018.Dtos;
+using SebHackathon2018.Dtos.Models;
 
 namespace SebHackathon2018.Controllers
 {
@@ -12,17 +13,24 @@ namespace SebHackathon2018.Controllers
     {
         [HttpGet]
         [Route("Callback/{bankId}/{userId}")]
-        public IActionResult GetRedirectFromBank(string bankId, string userId)
+        public IActionResult GetRedirectFromBank(BankEnum bankId, string userId)
         {
-            IBankApi bankApi = new SebApi();
+            IBankApi bankApi;
 
-            var token = bankApi.GetAuthorized(userId);
-
-            var tokenDto = new AccessTokenDto
+            switch (bankId)
             {
-                BankToken = token,
-                Token = Guid.NewGuid().ToString()
-            };
+                case BankEnum.Seb:
+                    //should differ from swed
+                    bankApi = new SebApi();
+                    break;
+                case BankEnum.MobileSign:
+                   bankApi = new IsignMobileApi();
+                    break;
+                default:
+                    throw new Exception("Bank not supported");
+            }
+
+            var tokenDto = bankApi.GetAuthorized(userId);
 
             TokensRepository.Add(tokenDto);
 

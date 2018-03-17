@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using SebHackathon2018.Communication.BankApis;
 using SebHackathon2018.Db;
-using SebHackathon2018.Models;
+using SebHackathon2018.Dtos.Models;
 
 namespace SebHackathon2018.Controllers
 {
@@ -46,18 +46,37 @@ namespace SebHackathon2018.Controllers
             }
         }
 
+        [Route("LoginMobile/{clientId}/{phone}/{code}")]
+        public IActionResult GetLoginMobile(string phone, string code)
+        {
+            var userId = phone + "," + code;
+            return Redirect($"http://localhost:61392/api/Auth/Callback/{BankEnum.MobileSign}/{userId}");
+        }
+
         [HttpGet]
         [Route("UserInfo/{accessToken}")]
         public IActionResult GetUserInfo(string accessToken)
         {
-            IBankApi bankApi = new SebApi();
-
             var tokenDto = TokensRepository.Get(accessToken);
 
             if (tokenDto == null)
                 throw new Exception("Invalid token");
 
-            var userInfo = bankApi.GetUserInfo(tokenDto.BankToken);
+            IBankApi bankApi;
+
+            switch (tokenDto.BankId)
+            {
+                case BankEnum.Seb:
+                    bankApi = new SebApi();
+                    break;
+                case BankEnum.MobileSign:
+                    bankApi = new IsignMobileApi();
+                    break;
+                default:
+                    throw new Exception("Bank not supported");
+            }
+
+            var userInfo = bankApi.GetUserInfo(tokenDto);
 
             return Ok(userInfo);
         }
