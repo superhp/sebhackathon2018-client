@@ -1,9 +1,8 @@
-﻿using System;
-using System.Net;
+using System;
 using Microsoft.AspNetCore.Mvc;
-using SebHackathon2018.Communication;
 using SebHackathon2018.Communication.BankApis;
 using SebHackathon2018.Db;
+using SebHackathon2018.Models;
 
 namespace SebHackathon2018.Controllers
 {
@@ -11,10 +10,13 @@ namespace SebHackathon2018.Controllers
     public class BankViewController : Controller
     {
         [HttpGet]
-        public string GetLoginView()
+        public BankViewDto GetLoginView()
         {
             var result = System.Text.Encoding.Default.GetString(Properties.Resources.BankView);
-            return result;
+            return new BankViewDto
+            {
+                BankViewTemplate = result
+            };
         }
 
         [HttpGet]

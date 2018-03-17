@@ -44,6 +44,10 @@ namespace SebHackathon2018
 
             app.UseStaticFiles();
 
+            app.UseCors(builder =>
+                builder.WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader());
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

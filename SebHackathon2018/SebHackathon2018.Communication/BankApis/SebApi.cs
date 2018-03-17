@@ -1,9 +1,8 @@
 ﻿using RestSharp;
-using SebHackathon2018.Communication.BankApis;
 using SebHackathon2018.Dtos;
 using SebHackathon2018.Dtos.Seb;
 
-namespace SebHackathon2018.Communication
+namespace SebHackathon2018.Communication.BankApis
 {
     public class SebApi : IBankApi
     {
