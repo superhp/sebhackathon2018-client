@@ -29,7 +29,7 @@ namespace SebHackathon2018.Controllers
 
         [HttpGet]
         [Route("LoginOption/{clientId}/{bankId}")]
-        public void GetLoginOption(string clientId, BankEnum bankId)
+        public IActionResult GetLoginOption(string clientId, BankEnum bankId)
         {
             // TODO: do something with clientId and bankId
             var userId = "ibsUser1";
@@ -37,14 +37,12 @@ namespace SebHackathon2018.Controllers
             {
                 case BankEnum.Seb:
                     //should differ from swed
-                    Redirect($"http://localhost:61392/api/Auth/Callback/{bankId}/{userId}");
-                    break;
+                    return Redirect($"http://localhost:61392/api/Auth/Callback/{bankId}/{userId}");
                 case BankEnum.Swedbank:
                     //should differ from seb
-                    Redirect($"http://localhost:61392/api/Auth/Callback/{bankId}/{userId}");
-                    break;
+                    return Redirect($"http://localhost:61392/api/Auth/Callback/{bankId}/{userId}");
                 default:
-                    throw new Exception("No more banks are supported");
+                    throw new Exception("Bank not supported");
             }
         }
 
