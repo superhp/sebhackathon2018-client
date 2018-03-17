@@ -1,5 +1,7 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Mvc;
+using SebHackathon2018.Communication.BankApis;
+using SebHackathon2018.Db;
 using SebHackathon2018.Models;
 
 namespace SebHackathon2018.Controllers
@@ -26,18 +28,30 @@ namespace SebHackathon2018.Controllers
         }
 
         [HttpGet]
-        [Route("LoginOption/{clientId}/{bankId}")]
-        public void GetLoginOption(string clientId, BankEnum bankId)
+        [Route("LoginOption/{cliendId}/{bankId}")]
+        public IActionResult GetLoginOption(string clientId, string bankId)
         {
-            switch (bankId)
-            {
-                case BankEnum.Seb:
-                    Redirect("Seb url");
-                    break;
-                case BankEnum.Swedbank:
-                    Redirect("Swed url");
-                    break;
-            }
+            // TODO: do something with clientId and bankId
+
+            var userId = "ibsUser1";
+
+            return Redirect($"http://localhost:61392/api/Auth/Callback/{bankId}/{userId}");
+        }
+
+        [HttpGet]
+        [Route("UserInfo/{accessToken}")]
+        public IActionResult GetUserInfo(string accessToken)
+        {
+            IBankApi bankApi = new SebApi();
+
+            var tokenDto = TokensRepository.Get(accessToken);
+
+            if (tokenDto == null)
+                throw new Exception("Invalid token");
+
+            var userInfo = bankApi.GetUserInfo(tokenDto.BankToken);
+
+            return Ok(userInfo);
         }
     }
 }
