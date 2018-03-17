@@ -6,10 +6,17 @@ class App extends Component {
 
   uniSignBankViewUrl = "http://localhost:61665/api/BankView";
 
-  componentDidMount() {
+  constructor() {
+    super();
+    this.state = { bankTemplate: "" } 
+  }
+
+  componentWillMount() {
     fetch(this.uniSignBankViewUrl)
       .then((response) => response.json())
-      .then((responseJson) => console.log(responseJson));
+      .then((res) => {
+        this.setState( { bankTemplate: res.bankViewTemplate} );
+      });
   }
 
   render() {
@@ -19,16 +26,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <div id="uniSignRoot">
-          <ul>
-            <li>
-              <button>SEB Login</button>
-            </li>
-            <li>
-              <button>Swedbank Login</button>
-            </li>
-          </ul>
-        </div>
+        <div dangerouslySetInnerHTML={{__html: this.state.bankTemplate}}></div>
       </div>
     );
   }
