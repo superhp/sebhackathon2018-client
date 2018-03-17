@@ -26,7 +26,7 @@ namespace SebHackathon2018.Controllers
 
             TokensRepository.Add(tokenDto);
 
-            return Redirect($"http://localhost:61392/link?token={tokenDto.Token}");
+            return Redirect($"http://localhost:3000/link?token={tokenDto.Token}");
         }
     }
 }
