@@ -28,6 +28,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\components\GetInfo.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\components\GetInfo.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
