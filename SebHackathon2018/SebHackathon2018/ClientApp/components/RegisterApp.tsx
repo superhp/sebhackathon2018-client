@@ -38,6 +38,15 @@ export class RegisterApp extends React.Component<RouteComponentProps<{}>, Regist
 
     handleSubmit(event: any) {
 
+        fetch('api/registration', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ companyName: this.state.companyName, redirectUrl: this.state.redirectUrl })
+        })
+            .then(response => response.json() as Promise<RegisterAppState>)
+            .then(data => this.setState(data));
 
 
         event.preventDefault();

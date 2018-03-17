@@ -35,7 +35,9 @@ export class GetInfo extends React.Component<RouteComponentProps<{}>, GetInfoSta
 
     handleSubmit(event: any) {
 
-
+        fetch('api/registration/' + this.state.clientId)
+            .then(response => response.json() as Promise<GetInfoState>)
+            .then(data => this.setState(data));
 
         event.preventDefault();
     }

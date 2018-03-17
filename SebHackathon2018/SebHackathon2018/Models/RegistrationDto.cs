@@ -2,5 +2,7 @@
 {
     public class RegistrationDto
     {
+        public string CompanyName { get; set; }
+        public string RedirectUrl { get; set; }
     }
 }
