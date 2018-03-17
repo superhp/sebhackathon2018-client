@@ -26,3 +26,33 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.img {
+  margin-right: 10px;
+  margin-left: 10px;
+  
+}
+
+.img-div {
+  border: 1px solid #cccccc;
+  margin-right: 3px;
+  margin-left: 3px;
+  width: 130px;
+  height: 90px;
+  line-height: 90px;
+}
+
+.uni-sign-container {
+  border: 1px solid #dddddd;
+  margin-top: 10px;
+}
+
+.banks-row {
+  margin-bottom: 10px;
+}
+
+.margin-top-10 {
+  margin-top: 10px;
+}
+
+

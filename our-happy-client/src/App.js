@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -9,25 +9,29 @@ class App extends Component {
 
   constructor() {
     super();
-    this.state = { bankTemplate: "" } 
+    this.state = {
+      bankTemplate: ""
+    }
   }
 
   componentWillMount() {
     fetch(this.uniSignBankViewUrl)
-      .then((response) => response.json())
-      .then((res) => {
-        this.setState( { bankTemplate: res.bankViewTemplate} );
-      });
+    .then((response) => response.json())
+    .then((res) => {
+      this.setState({bankTemplate: res.bankViewTemplate});
+    });
   }
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <img src={logo} className="App-logo" alt="logo"/>
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <div dangerouslySetInnerHTML={{__html: this.state.bankTemplate}}></div>
+        
+
       </div>
     );
   }
