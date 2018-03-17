@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SebHackathon2018.Db;
 using SebHackathon2018.Dtos;
-using SebHackathon2018.Models;
 using System;
+using SebHackathon2018.Dtos.Models;
 
 namespace SebHackathon2018.Controllers
 {

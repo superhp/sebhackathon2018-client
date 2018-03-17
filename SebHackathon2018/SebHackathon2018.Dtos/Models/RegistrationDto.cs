@@ -1,4 +1,4 @@
-﻿namespace SebHackathon2018.Models
+﻿namespace SebHackathon2018.Dtos.Models
 {
     public class RegistrationDto
     {
