@@ -4,7 +4,8 @@ import './App.css';
 
 class App extends Component {
 
-  uniSignBankViewUrl = "http://localhost:61665/api/BankView";
+  appId = "our-happy-client";
+  uniSignBankViewUrl = "http://localhost:61665/api/BankView/" + this.appId;
 
   constructor() {
     super();
