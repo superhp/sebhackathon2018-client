@@ -19,28 +19,16 @@ namespace SebHackathon2018.Communication.BankApis
             _client = new RestClient(_link);
         }
 
-        public UserDto GetUserInfo(string phone, string code)
+        private void WaitForConfirmation(Dtos.iSign.UserInfoDto userInfo)
         {
-            var request = new RestRequest($"mobile/login.json?access_token={_token}", Method.POST);
-
+            var request = new RestRequest($"mobile/login/status/{userInfo.token}.json?access_token={_token}", Method.GET);
             request.RequestFormat = DataFormat.Json;
-            request.AddBody(new
-            {
-                phone = "+" + phone,
-                code
-            });
+            var status = _client.Execute<Dtos.iSign.StatusDto>(request);
 
-            var response = _client.Execute<Dtos.iSign.UserInfoDto>(request);
-
-            var userInfo = response.Data;
-
-            return new UserDto
-            {
-                Citizenship = userInfo.country,
-                Email = "",
-                FullName = userInfo.name + " " + userInfo.surname,
-                Id = userInfo.code
-            };
+            if (status.Data.status.Equals("ok"))
+                return;
+            
+            WaitForConfirmation(userInfo);
         }
 
         public AccessTokenDto GetAuthorized(string userId)
@@ -59,6 +47,8 @@ namespace SebHackathon2018.Communication.BankApis
             var response = _client.Execute<Dtos.iSign.UserInfoDto>(request);
 
             var userInfo = response.Data;
+
+            WaitForConfirmation(userInfo);
 
             return new AccessTokenDto
             {
