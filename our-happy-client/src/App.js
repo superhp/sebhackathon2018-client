@@ -12,7 +12,8 @@ class App extends Component {
     super();
     this.state = {
       bankTemplate: "",
-      greeting: null
+      greeting: null, 
+      isAuthenticated: false 
     }
     this.fetchUserInfo = this.fetchUserInfo.bind(this);
   }
@@ -20,7 +21,9 @@ class App extends Component {
   fetchUserInfo(userToken) {
     fetch(this.userInfoUrl + userToken)
       .then((res) => res.json())
-      .then((body) => this.setState({ greeting: "Hello there, " + body.fullName + "!"}));
+      .then((body) => {
+        this.setState({ greeting: "Hello there, " + body.fullName + "!", isAuthenticated: true});
+      });
   }
 
   componentDidMount() {
@@ -45,13 +48,15 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo"/>
-          <h1 className="App-title">Very Important Business Consumer</h1>
-        </header>
-        <div dangerouslySetInnerHTML={{__html: this.state.bankTemplate}}></div>
-        <h5>
-          {this.state.greeting}
-        </h5>
-
+          <h1 className="App-title">Very Important Business Customer Website</h1>
+        </header>        
+        {this.state.isAuthenticated ? 
+          <h5 style={{marginTop: '100px', fontSize: "30px"}}>
+            {this.state.greeting}
+          </h5> 
+          : 
+          <div dangerouslySetInnerHTML={{__html: this.state.bankTemplate}}></div>
+        }
       </div>
     );
   }
